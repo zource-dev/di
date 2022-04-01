@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  neo4j:
+    container_name: neo4j
+    hostname: ${host}
+    image: neo4j:${version}
+    labels:
+      - 'custom.project=neo4j'
+      - 'custom.service=neo4j'
+    ports:
+      - '${port}:7474'
+      - '7473:7473'
+      - '7687:7687'
+    volumes:
+      - '${home}/data:/var/lib/neo4j/data'
+      - '${home}/logs:/logs'
+      - '${home}/import:/var/lib/neo4j/import'
+      - '${home}/plugins:/var/lib/neo4j/plugins'
+    environment:
+      NEO4J_AUTH: none
+    restart: on-failure

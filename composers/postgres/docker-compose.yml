@@ -1,0 +1,29 @@
+version: '3'
+services:
+  postgres:
+    container_name: postgres
+    hostname: ${host}
+    image: postgres:${version}
+    labels:
+      - 'custom.project=postgres'
+      - 'custom.service=postgres-db'
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    ports:
+      - '${port}:5432'
+    volumes:
+      - '${home}/database:/var/lib/postgresql/data'
+    restart: on-failure
+
+  # postgres-ui:
+  #   container_name: postgres-ui
+  #   hostname: postgres-ui
+  #   image: adminer
+  #   labels:
+  #     - "custom.project=postgres"
+  #     - "custom.service=postgres-ui"
+  #   ports:
+  #     - "8080:5082"
+  #   restart: on-failure
