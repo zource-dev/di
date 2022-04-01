@@ -1,6 +1,5 @@
 import * as Path from 'path';
 import filesize from 'filesize';
-import del from 'del';
 import exec from './exec';
 import { configDir, rootDir, getServiceConfig, fileDoesNotExist } from '../config';
 
@@ -65,11 +64,7 @@ export default async (service: string) => {
       console.log(service, size);
     },
     clean: async () => {
-      console.log('');
-      const { stdout } = await exec('docker-compose', ['-f', serviceFile, 'ps', '-q'], serviceConfig, false);
-      if (stdout) {
-      }
-      await del([serviceData]);
+      console.log(service, serviceData);
     },
   };
 };

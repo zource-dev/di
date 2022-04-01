@@ -54,7 +54,6 @@
   },
   "dependencies": {
     "commander": "^9.1.0",
-    "del": "^6.0.0",
     "filesize": "^8.0.7"
   }
 }

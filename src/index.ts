@@ -137,6 +137,17 @@ commands
     }
   });
 
+commands
+  .command('data')
+  .argument('[service...]', 'services data directories')
+  .description('shows data directories')
+  .action(async (services) => {
+    for (const service of services) {
+      const { clean } = await compose(service);
+      await clean().catch((e) => console.error(e.stack));
+    }
+  });
+
 commands.on('--help', () => {
   console.log('');
   console.log('Examples:');

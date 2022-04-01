@@ -16,6 +16,10 @@ NPM:
 npm install -g  @zource/di
 ```
 
+## Requirement
+
+Please install [docker-desktop or docker engine](https://docs.docker.com/get-docker/)
+
 ## Help
 
 ```bash
@@ -42,6 +46,7 @@ Commands:
   ps [service...]                  list services
   size [service...]                sezes services data
   reset [service...]               sezes services config
+  data [service...]                shows data directories
   help [command]                   display help for command
 
 Examples:
