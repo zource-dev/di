@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import compose from './utils/compose';
-import { listServices, loadConfig, saveConfig, getPath, setPath } from './config';
+import { listServices, loadConfig, saveConfig, resetServiceConfig, getPath, setPath } from './config';
 // @ts-ignore
 import { version, description } from '../package.json';
 
@@ -133,8 +133,7 @@ commands
   .description('sezes services config')
   .action(async (services) => {
     for (const service of services) {
-      const { size } = await compose(service);
-      await size().catch((e) => console.error(e.stack));
+      await resetServiceConfig(service).catch((e) => console.error(e.stack));
     }
   });
 

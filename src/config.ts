@@ -34,6 +34,11 @@ export const defaultConfig: Config = {
     host: 'neo4j',
     version: 'latest',
   },
+  dynamodb: {
+    port: 8000,
+    host: 'dynamodb',
+    version: 'latest',
+  },
   nginx: {
     port: 8080,
     host: 'nginx',
@@ -63,7 +68,7 @@ export const saveConfig = async (config: Config) => {
 
 export const getServiceConfig = async (service: string) => {
   const config = await loadConfig();
-  const serviceConfig = config[service];
+  const serviceConfig = config[service] ?? (await setServiceConfig(service, defaultConfig[service]));
 
   return {
     home: Path.join(configDir, service),
