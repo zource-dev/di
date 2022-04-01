@@ -130,7 +130,7 @@ commands
 commands
   .command('reset')
   .argument('[service...]', 'services to reset')
-  .description('sezes services config')
+  .description('resets services config')
   .action(async (services) => {
     for (const service of services) {
       await resetServiceConfig(service).catch((e) => console.error(e.stack));
