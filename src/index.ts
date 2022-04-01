@@ -117,6 +117,17 @@ commands
   });
 
 commands
+  .command('volumes')
+  .argument('[service...]', 'services volumes list')
+  .description('lists services volumes')
+  .action(async (services) => {
+    for (const service of services) {
+      const { volumes } = await compose(service);
+      await volumes().catch((e) => console.error(e.stack));
+    }
+  });
+
+commands
   .command('size')
   .argument('[service...]', 'services data size')
   .description('sezes services data')

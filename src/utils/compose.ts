@@ -43,6 +43,17 @@ export default async (service: string) => {
     ps: async () => {
       await exec('docker-compose', ['-f', serviceFile, 'ps'], serviceConfig);
     },
+    volumes: async () => {
+      const { stdout: servicesJson } = await exec('docker-compose', ['-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
+      const serviceIds: string[] = JSON.parse(servicesJson).map((s: any) => s.ID);
+      for (const serviceId of serviceIds) {
+        const { stdout: inspectJson } = await exec('docker', ['inspect', '--format', '{{json .Mounts}}', serviceId], serviceConfig, false);
+        const mounts = JSON.parse(inspectJson) as any[];
+        for (const { Source, Destination } of mounts) {
+          console.log(service, Source, Destination);
+        }
+      }
+    },
     size: async () => {
       const { stdout: servicesJson } = await exec('docker-compose', ['-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
       const serviceIds: string[] = JSON.parse(servicesJson).map((s: any) => s.ID);
