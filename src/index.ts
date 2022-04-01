@@ -10,7 +10,7 @@ commands.name('di').description(description).version(version, '-v, --version');
 
 commands
   .command('list')
-  .command('ls')
+  .alias('ls')
   .description('list all available services')
   .action(async () => {
     const services = await listServices();
