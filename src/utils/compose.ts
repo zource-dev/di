@@ -42,7 +42,7 @@ export default async (service: string) => {
       await exec('docker-compose', args, serviceConfig);
     },
     ps: async () => {
-      await exec('docker-compose', ['-f', serviceFile, 'ps', '--format', 'json'], serviceConfig);
+      await exec('docker-compose', ['-f', serviceFile, 'ps'], serviceConfig);
     },
     size: async () => {
       const { stdout: servicesJson } = await exec('docker-compose', ['-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
