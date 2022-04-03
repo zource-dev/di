@@ -1,0 +1,6 @@
+/.github
+/coverage
+/src
+/jest.*
+/*.log*
+/tsconfig.json

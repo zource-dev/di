@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+  redis:
+    container_name: redis
+    hostname: ${host}
+    image: redis:${version}
+    labels:
+      - 'custom.project=redis'
+      - 'custom.service=redis'
+    ports:
+      - '${port}:6379'
+    volumes:
+      - '${home}/database:/etc/redis/database'
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+    restart: on-failure
+
+  # TODO Conditional execution
+  # redis-ui:
+  #   container_name: redis-ui
+  #   hostname: redis-ui
+  #   image: rediscommander/redis-commander:latest
+  #   labels:
+  #     - "custom.project=redis"
+  #     - "custom.service=ui"
+  #   depends_on:
+  #     - redis
+  #   links:
+  #     - redis
+  #   ports:
+  #     - "6380:6380"
+  #   environment:
+  #     - REDIS_HOSTS=local:redis:${REDIS_PORT}
+  #     - PORT=6380
+  #   restart: on-failure
+
+  # redis-bull:
+  #   container_name: redis-bull
+  #   hostname: redis-bull
+  #   image: deadly0/bull-board
+  #   labels:
+  #     - "custom.project=redis"
+  #     - "custom.service=bull"
+  #   depends_on:
+  #     - redis
+  #   links:
+  #     - redis
+  #   environment:
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #     - REDIS_PASSWORD=
+  #     - BULL_PREFIX=bull
+  #   ports:
+  #     - "3000:3000"
+  #   restart: no
