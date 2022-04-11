@@ -32,6 +32,7 @@ Please install [docker-desktop or docker engine](https://docs.docker.com/get-doc
 - [MongoDB](https://hub.docker.com/_/mongo) default version `latest`
 - [Neo4j](https://hub.docker.com/_/neo4j) default version `latest`
 - [Postgres](https://hub.docker.com/_/postgres) default version `latest`
+- [RabbitMQ](https://hub.docker.com/_/rabbitmq) default version `management-alpine`
 - [Redis](https://hub.docker.com/_/redis) default version `alpine`
 
 ## Help

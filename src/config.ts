@@ -14,6 +14,12 @@ export const defaultConfig: Config = {
     host: 'redis',
     version: 'alpine',
   },
+  rabbitmq: {
+    port: 5672,
+    mport: 15672,
+    host: 'rabbitmq',
+    version: 'management-alpine',
+  },
   mongo: {
     port: 27017,
     host: 'mongo',
