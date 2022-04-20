@@ -10,29 +10,34 @@ services:
     ports:
       - '${port}:6379'
     volumes:
-      - '${home}/database:/etc/redis/database'
+      - type: volume
+        source: data
+        target: /data
+        consistency: delegated
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
     restart: on-failure
 
-  # TODO Conditional execution
-  # redis-ui:
-  #   container_name: redis-ui
-  #   hostname: redis-ui
-  #   image: rediscommander/redis-commander:latest
-  #   labels:
-  #     - "custom.project=redis"
-  #     - "custom.service=ui"
-  #   depends_on:
-  #     - redis
-  #   links:
-  #     - redis
-  #   ports:
-  #     - "6380:6380"
-  #   environment:
-  #     - REDIS_HOSTS=local:redis:${REDIS_PORT}
-  #     - PORT=6380
-  #   restart: on-failure
+  redis-ui:
+    container_name: redis-ui
+    hostname: redis-ui
+    image: rediscommander/redis-commander:latest
+    labels:
+      - 'custom.project=redis'
+      - 'custom.service=ui'
+    depends_on:
+      - redis
+    links:
+      - redis
+    ports:
+      - '${uiport}:8081'
+    environment:
+      - REDIS_HOSTS=local:${host}:${port}
+      - PORT=8081
+    restart: on-failure
+
+volumes:
+  data:
 
   # redis-bull:
   #   container_name: redis-bull

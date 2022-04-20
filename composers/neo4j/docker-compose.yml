@@ -12,10 +12,16 @@ services:
       - '7473:7473'
       - '7687:7687'
     volumes:
-      - '${home}/data:/var/lib/neo4j/data'
-      - '${home}/logs:/logs'
+      - type: volume
+        source: data
+        target: /var/lib/neo4j/data
+        consistency: delegated
       - '${home}/import:/var/lib/neo4j/import'
       - '${home}/plugins:/var/lib/neo4j/plugins'
+      - '${home}/logs:/logs'
     environment:
       NEO4J_AUTH: none
     restart: on-failure
+
+volumes:
+  data:

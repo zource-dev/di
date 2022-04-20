@@ -7,6 +7,7 @@ export default async (service: string) => {
   const serviceDir = Path.join(rootDir, 'composers', service);
   const serviceFile = Path.join(serviceDir, 'docker-compose.yml');
   const serviceData = Path.join(configDir, service);
+  const dataVolume = `${service}_data`;
   const doesNotExist = await fileDoesNotExist(serviceFile);
   if (doesNotExist) {
     throw new Error(`Service "${service}" not found`);
@@ -61,6 +62,7 @@ export default async (service: string) => {
       for (const serviceId of serviceIds) {
         const { stdout: inspectJson } = await exec('docker', ['inspect', '--format', '{{json .Mounts}}', serviceId], serviceConfig, false);
         const data = JSON.parse(inspectJson);
+        console.log(data);
         const volumes = await Promise.all(
           data
             .filter(({ Type }: any) => Type === 'bind')
@@ -74,8 +76,25 @@ export default async (service: string) => {
       const size = filesize(totalSize);
       console.log(service, size);
     },
-    clean: async () => {
+    data: async () => {
       console.log(service, serviceData);
+    },
+    clean: async () => {
+      await exec('docker', ['volume', 'rm', dataVolume], serviceConfig);
+    },
+    backup: async () => {
+      await exec(
+        'docker',
+        ['run', '--rm', '-v', `${serviceData}:/backup/to`, '-v', `${dataVolume}:/backup/from`, '-w=/backup/from', 'alpine', 'tar', 'cvf', '/backup/to/backup.tar', '.'],
+        serviceConfig
+      );
+    },
+    restore: async () => {
+      await exec(
+        'docker',
+        ['run', '--rm', '-v', `${serviceData}:/restore/from`, '-v', `${dataVolume}:/restore/to`, '-w=/restore/to', 'alpine', 'tar', 'xvf', '/restore/from/backup.tar', '-C', '/restore/to'],
+        serviceConfig
+      );
     },
   };
 };

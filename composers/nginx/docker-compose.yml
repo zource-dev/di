@@ -12,5 +12,5 @@ services:
       - '${config}:/etc/nginx/nginx.conf:ro'
       - '${home}/conf.d:/etc/nginx/conf.d/'
       - '${home}/html:/usr/share/nginx/html/'
-      - '${home}/log:/var/log/nginx/'
+      - '${home}/logs:/var/log/nginx/'
     restart: on-failure

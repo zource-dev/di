@@ -129,7 +129,7 @@ commands
 
 commands
   .command('size')
-  .argument('[service...]', 'services data size')
+  .argument('[service...]', 'services to retrieve data size')
   .description('sezes services data')
   .action(async (services) => {
     for (const service of services) {
@@ -140,7 +140,7 @@ commands
 
 commands
   .command('reset')
-  .argument('[service...]', 'services to reset')
+  .argument('[service...]', 'services to reset config')
   .description('resets services config')
   .action(async (services) => {
     for (const service of services) {
@@ -154,8 +154,41 @@ commands
   .description('shows data directories')
   .action(async (services) => {
     for (const service of services) {
+      const { data } = await compose(service);
+      await data().catch((e) => console.error(e.stack));
+    }
+  });
+
+commands
+  .command('clean')
+  .argument('[service...]', 'services to clean')
+  .description('cleans services data')
+  .action(async (services) => {
+    for (const service of services) {
       const { clean } = await compose(service);
       await clean().catch((e) => console.error(e.stack));
+    }
+  });
+
+commands
+  .command('backup')
+  .argument('[service...]', 'services to backup')
+  .description('backups services data')
+  .action(async (services) => {
+    for (const service of services) {
+      const { backup } = await compose(service);
+      await backup().catch((e) => console.error(e.stack));
+    }
+  });
+
+commands
+  .command('restore')
+  .argument('[service...]', 'services to restore')
+  .description('restores services data from backups')
+  .action(async (services) => {
+    for (const service of services) {
+      const { restore } = await compose(service);
+      await restore().catch((e) => console.error(e.stack));
     }
   });
 

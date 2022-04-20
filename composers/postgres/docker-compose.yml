@@ -14,8 +14,14 @@ services:
     ports:
       - '${port}:5432'
     volumes:
-      - '${home}/database:/var/lib/postgresql/data'
+      - type: volume
+        source: data
+        target: /var/lib/postgres/data
+        consistency: delegated
     restart: on-failure
+
+volumes:
+  data:
 
   # postgres-ui:
   #   container_name: postgres-ui

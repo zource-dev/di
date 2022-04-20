@@ -11,6 +11,7 @@ export type Config = Record<string, Record<string, any>>;
 export const defaultConfig: Config = {
   redis: {
     port: 6379,
+    uiport: 8085,
     host: 'redis',
     version: 'alpine',
   },

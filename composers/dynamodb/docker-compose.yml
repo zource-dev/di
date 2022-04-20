@@ -10,7 +10,10 @@ services:
     ports:
       - '${port}:8000'
     volumes:
-      - '${home}/data:/home/dynamodblocal/data'
+      - type: volume
+        source: data
+        target: /home/dynamodblocal/data
+        consistency: delegated
     healthcheck:
       test: >
         curl http://localhost:8000
@@ -18,3 +21,6 @@ services:
       start_period: 30s
     command: '-jar DynamoDBLocal.jar -sharedDb -dbPath ./data'
     restart: on-failure
+
+volumes:
+  data:
