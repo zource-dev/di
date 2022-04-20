@@ -9,6 +9,7 @@ services:
     ports:
       - '${port}:80'
     volumes:
+      - '${home}/backups:/var/backups'
       - '${config}:/etc/nginx/nginx.conf:ro'
       - '${home}/conf.d:/etc/nginx/conf.d/'
       - '${home}/html:/usr/share/nginx/html/'

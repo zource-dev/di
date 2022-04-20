@@ -18,6 +18,7 @@ services:
         source: data
         target: /var/lib/postgres/data
         consistency: delegated
+      - '${home}/backups:/var/backups'
     restart: on-failure
 
 volumes:

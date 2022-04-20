@@ -85,14 +85,14 @@ export default async (service: string) => {
     backup: async () => {
       await exec(
         'docker',
-        ['run', '--rm', '-v', `${serviceData}:/backup/to`, '-v', `${dataVolume}:/backup/from`, '-w=/backup/from', 'alpine', 'tar', 'cvf', '/backup/to/backup.tar', '.'],
+        ['run', '--rm', '-v', `${serviceData}:/backup/to`, '-v', `${dataVolume}:/backup/from`, '-w=/backup/from', 'alpine', 'sh', '-c', 'tar cvf /backup/to/backup.tar .'],
         serviceConfig
       );
     },
     restore: async () => {
       await exec(
         'docker',
-        ['run', '--rm', '-v', `${serviceData}:/restore/from`, '-v', `${dataVolume}:/restore/to`, '-w=/restore/to', 'alpine', 'tar', 'xvf', '/restore/from/backup.tar', '-C', '/restore/to'],
+        ['run', '--rm', '-v', `${serviceData}:/restore/from`, '-v', `${dataVolume}:/restore/to`, '-w=/restore/to', 'alpine', 'sh', '-c', 'tar xvf /restore/from/backup.tar -C /restore/to'],
         serviceConfig
       );
     },

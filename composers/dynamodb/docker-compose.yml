@@ -14,6 +14,7 @@ services:
         source: data
         target: /home/dynamodblocal/data
         consistency: delegated
+      - '${home}/backups:/var/backups'
     healthcheck:
       test: >
         curl http://localhost:8000

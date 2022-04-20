@@ -18,6 +18,7 @@ services:
         target: /var/lib/zookeeper/data
         consistency: delegated
       - '${home}/logs:/var/lib/zookeeper/log'
+      - '${home}/backups:/var/backups'
     restart: on-failure
 
   kafka:

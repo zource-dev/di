@@ -19,6 +19,7 @@ services:
         source: data
         target: /var/lib/rabbitmq
         consistency: delegated
+      - '${home}/backups:/var/backups'
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s

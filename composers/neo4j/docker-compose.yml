@@ -16,6 +16,7 @@ services:
         source: data
         target: /var/lib/neo4j/data
         consistency: delegated
+      - '${home}/backups:/var/backups'
       - '${home}/import:/var/lib/neo4j/import'
       - '${home}/plugins:/var/lib/neo4j/plugins'
       - '${home}/logs:/logs'

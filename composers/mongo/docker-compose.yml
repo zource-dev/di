@@ -15,6 +15,7 @@ services:
         target: /data/db
         consistency: delegated
       - '${home}/logs:/var/log'
+      - '${home}/backups:/var/backups'
     healthcheck:
       test: >
         test $$(echo "rs.status().ok || rs.secondaryOk() || rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:${port}' }] }).ok" | mongo --quiet) -eq 1

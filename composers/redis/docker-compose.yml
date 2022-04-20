@@ -14,6 +14,7 @@ services:
         source: data
         target: /data
         consistency: delegated
+      - '${home}/backups:/var/backups'
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
     restart: on-failure
