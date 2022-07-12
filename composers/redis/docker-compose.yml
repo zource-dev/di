@@ -3,7 +3,7 @@ services:
   redis:
     container_name: redis
     hostname: ${host}
-    image: redis:${version}
+    image: redislabs/redisearch:${version}
     labels:
       - 'custom.project=redis'
       - 'custom.service=redis'

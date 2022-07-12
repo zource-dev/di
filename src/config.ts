@@ -13,7 +13,7 @@ export const defaultConfig: Config = {
     port: 6379,
     uiport: 8085,
     host: 'redis',
-    version: 'alpine',
+    version: 'latest',
   },
   rabbitmq: {
     port: 5672,
