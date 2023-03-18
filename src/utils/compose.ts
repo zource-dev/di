@@ -1,5 +1,5 @@
 import * as Path from 'path';
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import exec from './exec';
 import { configDir, rootDir, getServiceConfig, fileDoesNotExist } from '../config';
 
@@ -62,14 +62,9 @@ export default async (service: string) => {
       for (const serviceId of serviceIds) {
         const { stdout: inspectJson } = await exec('docker', ['inspect', '--format', '{{json .Mounts}}', serviceId], serviceConfig, false);
         const data = JSON.parse(inspectJson);
-        console.log(data);
-        const volumes = await Promise.all(
-          data
-            .filter(({ Type }: any) => Type === 'bind')
-            .map(({ Destination }: any) => exec('docker', ['exec', serviceId, 'sh', '-c', `du -s ${Destination} | awk '{print $1}'`], serviceConfig, false))
-        );
+        const volumes = await Promise.all(data.map(({ Destination }: any) => exec('docker', ['exec', serviceId, 'sh', '-c', `du -s ${Destination} | awk '{print $1}'`], serviceConfig, false)));
         totalSize += volumes.reduce((result, { stdout }: any) => {
-          return result + parseInt(stdout);
+          return result + parseInt(stdout) * 1024;
         }, 0);
       }
 

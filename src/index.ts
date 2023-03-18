@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import compose from './utils/compose';
-import { listServices, loadConfig, saveConfig, resetServiceConfig, getPath, setPath } from './config';
+import { dump } from './utils/dump';
+import { listServices, loadConfig, saveConfig, resetServiceConfig, getPath, setPath, defaultConfig } from './config';
 // @ts-ignore
 import { version, description } from '../package.json';
 
@@ -22,22 +23,45 @@ commands
 
 commands
   .command('config')
-  .argument('[path]')
-  .argument('[value]')
+  .description('print config')
+  .action(async () => {
+    const config = await loadConfig();
+    dump(config);
+  });
+
+commands
+  .command('config:reset')
+  .description('reset config')
+  .action(async () => {
+    await saveConfig(defaultConfig);
+  });
+
+commands
+  .command('config:edit')
+  .description('edit config')
+  .action(async () => {
+    await saveConfig(defaultConfig);
+  });
+
+commands
+  .command('config:get')
+  .argument('path')
+  .description('show config')
+  .action(async (path) => {
+    const config = await loadConfig();
+    const configPath = getPath(config, path);
+    dump(configPath);
+  });
+
+commands
+  .command('config:set')
+  .argument('path')
+  .argument('value')
   .option('-i, --int', 'as integer')
   .option('-b, --bool', 'as boolean')
-  .description('show/update config')
+  .description('update config')
   .action(async (path, value, options) => {
     const config = await loadConfig();
-    if (!path) {
-      console.log(config);
-      return;
-    }
-    if (!value) {
-      const configPath = getPath(config, path);
-      console.log(configPath);
-      return;
-    }
     if (options.int) {
       setPath(config, path, parseInt(value));
     }
@@ -46,7 +70,7 @@ commands
     }
 
     await saveConfig(config);
-    console.log(config);
+    dump(config);
   });
 
 commands
@@ -165,7 +189,8 @@ commands
   .description('cleans services data')
   .action(async (services) => {
     for (const service of services) {
-      const { clean } = await compose(service);
+      const { down, clean } = await compose(service);
+      await down();
       await clean().catch((e) => console.error(e.stack));
     }
   });
@@ -176,7 +201,8 @@ commands
   .description('backups services data')
   .action(async (services) => {
     for (const service of services) {
-      const { backup } = await compose(service);
+      const { down, backup } = await compose(service);
+      await down();
       await backup().catch((e) => console.error(e.stack));
     }
   });
@@ -187,7 +213,8 @@ commands
   .description('restores services data from backups')
   .action(async (services) => {
     for (const service of services) {
-      const { restore } = await compose(service);
+      const { down, restore } = await compose(service);
+      await down();
       await restore().catch((e) => console.error(e.stack));
     }
   });
