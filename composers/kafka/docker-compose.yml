@@ -7,18 +7,19 @@ services:
     labels:
       - 'custom.project=kafka'
       - 'custom.service=zookeeper'
-    ports:
-      - '2181:2181'
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     volumes:
       - type: volume
-        source: data
+        source: zookeeper-data
         target: /var/lib/zookeeper/data
         consistency: delegated
-      - '${home}/logs:/var/lib/zookeeper/log'
-      - '${home}/backups:/var/backups'
+      - type: volume
+        source: zookeeper-logs
+        target: /var/lib/zookeeper/log
+        consistency: delegated
+      - '${home}/backups:/var/backups:delegated'
     restart: on-failure
 
   kafka:
@@ -38,20 +39,27 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'kafka-zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      # KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      # KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      # KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      # KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - '${home}/kafka/data:/var/lib/kafka/data'
-      - /var/run/docker.sock:/var/run/docker.sock
+      - type: volume
+        source: broker-data
+        target: /var/lib/kafka/data
+        consistency: delegated
+      - /var/run/docker.sock:/var/run/docker.sock:delegated
     restart: on-failure
 
 volumes:
-  data:
+  zookeeper-logs:
+  zookeeper-data:
+  broker-data:
 
   # kafka-schema-registry:
   #   container_name: kafka-schema-registry

@@ -16,13 +16,17 @@ services:
         source: data
         target: /var/lib/neo4j/data
         consistency: delegated
+      - type: volume
+        source: logs
+        target: /logs
+        consistency: delegated
       - '${home}/backups:/var/backups'
       - '${home}/import:/var/lib/neo4j/import'
       - '${home}/plugins:/var/lib/neo4j/plugins'
-      - '${home}/logs:/logs'
     environment:
       NEO4J_AUTH: none
     restart: on-failure
 
 volumes:
+  logs:
   data:

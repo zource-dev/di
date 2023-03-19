@@ -22,8 +22,9 @@ services:
       - '${home}/backups:/var/backups'
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
+      start_period: 30s
+      interval: 10s
+      timeout: 3s
       retries: 3
     restart: on-failure
 

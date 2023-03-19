@@ -14,16 +14,22 @@ services:
         source: data
         target: /data/db
         consistency: delegated
-      - '${home}/logs:/var/log'
+      - type: volume
+        source: logs
+        target: /var/log
+        consistency: delegated
       - '${home}/backups:/var/backups'
     healthcheck:
       test: >
         test $$(echo "rs.status().ok || rs.secondaryOk() || rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:${port}' }] }).ok" | mongo --quiet) -eq 1
-      interval: 10s
       start_period: 30s
+      interval: 10s
+      timeout: 3s
+      retries: 3
     command: --wiredTigerJournalCompressor zstd --oplogMinRetentionHours 1.5 --replSet rs0 --bind_ip_all
     #command: --wiredTigerJournalCompressor zstd --oplogMinRetentionHours 1.5 --logpath /var/log/mongodb/mongod.log --replSet rs0 --bind_ip_all
     restart: on-failure
 
 volumes:
+  logs:
   data:

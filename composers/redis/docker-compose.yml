@@ -17,6 +17,10 @@ services:
       - '${home}/backups:/var/backups'
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      start_period: 30s
+      interval: 10s
+      timeout: 3s
+      retries: 3
     restart: on-failure
 
   redis-ui:
@@ -35,6 +39,12 @@ services:
     environment:
       - REDIS_HOSTS=local:${host}:${port}
       - PORT=8081
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--output-document', '-', 'localhost:8081']
+      start_period: 30s
+      interval: 10s
+      timeout: 3s
+      retries: 3
     restart: on-failure
 
 volumes:
