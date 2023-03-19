@@ -1,6 +1,6 @@
 {
   "name": "@zource/di",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Docker Infrastructure CLI",
   "main": "build/index.js",
   "bin": {
