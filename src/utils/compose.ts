@@ -19,33 +19,33 @@ export default async (service: string) => {
 
   return {
     up: async (attached?: boolean) => {
-      const args = ['-f', serviceFile, 'up'];
+      const args = ['compose', '-f', serviceFile, 'up'];
       if (!attached) {
         args.push('-d');
       }
-      await exec('docker-compose', args, serviceConfig);
+      await exec('docker', args, serviceConfig);
     },
     down: async () => {
-      await exec('docker-compose', ['-f', serviceFile, 'down'], serviceConfig);
+      await exec('docker', ['compose', '-f', serviceFile, 'down'], serviceConfig);
     },
     kill: async () => {
-      await exec('docker-compose', ['-f', serviceFile, 'kill'], serviceConfig);
+      await exec('docker', ['compose', '-f', serviceFile, 'kill'], serviceConfig);
     },
     restart: async () => {
-      await exec('docker-compose', ['-f', serviceFile, 'restart'], serviceConfig);
+      await exec('docker', ['compose', '-f', serviceFile, 'restart'], serviceConfig);
     },
     logs: async (follow: boolean) => {
-      const args = ['-f', serviceFile, 'logs'];
+      const args = ['compose', '-f', serviceFile, 'logs'];
       if (follow) {
         args.push('-f');
       }
-      await exec('docker-compose', args, serviceConfig);
+      await exec('docker', args, serviceConfig);
     },
     ps: async () => {
-      await exec('docker-compose', ['-f', serviceFile, 'ps'], serviceConfig);
+      await exec('docker', ['compose', '-f', serviceFile, 'ps'], serviceConfig);
     },
     volumes: async () => {
-      const { stdout: servicesJson } = await exec('docker-compose', ['-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
+      const { stdout: servicesJson } = await exec('docker', ['compose', '-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
       const serviceIds: string[] = JSON.parse(servicesJson).map((s: any) => s.ID);
       for (const serviceId of serviceIds) {
         const { stdout: inspectJson } = await exec('docker', ['inspect', '--format', '{{json .Mounts}}', serviceId], serviceConfig, false);
@@ -56,7 +56,7 @@ export default async (service: string) => {
       }
     },
     size: async () => {
-      const { stdout: servicesJson } = await exec('docker-compose', ['-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
+      const { stdout: servicesJson } = await exec('docker', ['compose', '-f', serviceFile, 'ps', '--format', 'json'], serviceConfig, false);
       const serviceIds: string[] = JSON.parse(servicesJson).map((s: any) => s.ID);
       let totalSize = 0;
       for (const serviceId of serviceIds) {
