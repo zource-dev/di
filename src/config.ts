@@ -33,6 +33,7 @@ export const defaultConfig: Config = {
   },
   kafka: {
     port: 9092,
+    uiport: 9091,
     host: 'kafka',
     version: 'latest',
   },

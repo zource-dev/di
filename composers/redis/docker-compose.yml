@@ -14,6 +14,7 @@ services:
         source: data
         target: /data
         consistency: delegated
+      - '${home}/logs:/var/log'
       - '${home}/backups:/var/backups'
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
@@ -22,6 +23,7 @@ services:
       timeout: 3s
       retries: 3
     restart: on-failure
+    user: root
 
   redis-ui:
     container_name: redis-ui

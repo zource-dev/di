@@ -19,6 +19,10 @@ services:
         source: data
         target: /var/lib/rabbitmq
         consistency: delegated
+      - type: volume
+        source: logs
+        target: /var/log
+        consistency: delegated
       - '${home}/backups:/var/backups'
     healthcheck:
       test: rabbitmq-diagnostics -q ping
@@ -27,6 +31,8 @@ services:
       timeout: 3s
       retries: 3
     restart: on-failure
+    user: root
 
 volumes:
+  logs:
   data:

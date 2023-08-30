@@ -15,3 +15,4 @@ services:
       - '${home}/html:/usr/share/nginx/html/'
       - '${home}/logs:/var/log/nginx/'
     restart: on-failure
+    user: root

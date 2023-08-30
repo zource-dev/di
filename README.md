@@ -7,7 +7,7 @@
 
 Command line tool to quickly spin up infrastracture using docker for local development
 
-## Installation
+## Usage
 
 Yarn:
 
@@ -19,6 +19,12 @@ NPM:
 
 ```bash
 npm install -g  @zource/di
+```
+
+NPX:
+
+```bash
+npx @zource/di --help
 ```
 
 ## Requirement
@@ -73,7 +79,7 @@ Examples:
 
 ## License
 
-Copyright 2022 Ivan Zakharchanka [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+Copyright 2023 Ivan Zakharchanka [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 [npm-url]: https://www.npmjs.com/package/@zource/di
 [downloads-image]: https://img.shields.io/npm/dw/@zource/di.svg?maxAge=43200
