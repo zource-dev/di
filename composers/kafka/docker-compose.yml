@@ -23,8 +23,8 @@ services:
     restart: on-failure
     user: root
 
-  kafka:
-    container_name: kafka
+  kafka-broker:
+    container_name: kafka-broker
     hostname: ${host}
     image: confluentinc/cp-kafka:${version}
     labels:
@@ -59,15 +59,17 @@ services:
     restart: on-failure
     user: root
 
-  control-center:
+  kafka-ui:
     image: confluentinc/cp-enterprise-control-center:${version}
-    hostname: kafka-cc
-    container_name: kafka-cc
+    hostname: kafka-ui
+    container_name: kafka-ui
     labels:
       - 'custom.project=kafka'
-      - 'custom.service=control-center'
+      - 'custom.service=ui'
+    links:
+      - kafka-broker
     depends_on:
-      - kafka
+      - kafka-broker
       # - schema-registry
       # - connect
       # - ksqldb-server
@@ -84,6 +86,8 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
+    restart: on-failure
+    user: root
 
 volumes:
   zookeeper-data:
