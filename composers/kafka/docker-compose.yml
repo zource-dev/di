@@ -1,4 +1,3 @@
-version: '3'
 services:
   kafka-zookeeper:
     container_name: kafka-zookeeper

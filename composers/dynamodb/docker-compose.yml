@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   dynamodb:
     container_name: dynamodb
