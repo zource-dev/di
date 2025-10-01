@@ -10,6 +10,6 @@ export const dump = (value: unknown) => {
       breakLength: Infinity,
       colors: true,
       compact: false,
-    })
+    }),
   );
 };

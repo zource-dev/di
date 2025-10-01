@@ -66,7 +66,7 @@ commands
       setPath(config, path, parseInt(value));
     }
     if (options.bool) {
-      setPath(config, path, !value.test(/^(false|0|\-)$/i));
+      setPath(config, path, !value.test(/^(false|0|-)$/i));
     }
 
     await saveConfig(config);
